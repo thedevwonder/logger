@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=logger
+    ports:
+      - $MYSQL_DOCKER_PORT:$MYSQL_DOCKER_PORT
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    depends_on:
+      - mysqldb
+    build: ./
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - DB_NAME=logger
+      - DB_PORT=3306
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:

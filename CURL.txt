@@ -1,0 +1,10 @@
+curl --location --request POST 'http://localhost:8081/log' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"id": 1234,
+	"unix_ts": 1684129671,
+	"user_id": 123456,
+	"event_name": "login"
+}'
+
+curl --location --request GET 'http://localhost:8081/log'
